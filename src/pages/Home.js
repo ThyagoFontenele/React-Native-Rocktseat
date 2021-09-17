@@ -1,16 +1,100 @@
-import React from "react";
-import {View, Text } from "react-native";
+import React, { useState, useEffect } from "react";
+import {   
+    View, 
+    Text, 
+    StyleSheet, 
+    TextInput, 
+    Platform,
+    FlatList
+} from "react-native";
+import { Button } from "../components/Button";
+import { SkillCard } from "../components/SkillCard";
 
 export function Home() {
-  return(
-    <>
+    const [newSkill, setNewSkill] = useState('');
+    const [mySkills, setMySkills] = useState([]);
+    const [gretting, setGretting] = useState('');
 
-      <View style={{ flex: 1, justifyContent:'center', alignItems: 'center' }}>
 
-        <Text>React Native</Text>
+    function handleAddNewSkill(){
+        setMySkills(oldState => [...oldState, newSkill]);
+    }
+
+    useEffect(() => {
+        const currentHour = new Date().getHours();
+        
+        if (currentHour < 12 && currentHour >= 4){
+            setGretting('Good morning');
+        }
+        else if (currentHour >= 12 && currentHour < 18){
+            setGretting('Good afternoon');
+        }
+        else{
+            setGretting('Good night');
+        }
+    })
+
+    return(
+      <View style={styles.container}>
+        
+        <Text style={styles.title}>
+            Welcome, Thyago
+        </Text>
+
+        <Text style={styles.greetings}>
+            { gretting }
+        </Text>
+
+        <TextInput
+            style={styles.input}
+            placeholder="New skill"
+            placeholderTextColor="#555"
+            onChangeText={setNewSkill}
+        />
+
+        <Button onPress={handleAddNewSkill}/>
+        
+        <Text style={ [styles.title, { marginTop: 50 }] }>
+            My Skills
+        </Text>
+       
+        <FlatList 
+            data={mySkills}
+            keyExtractor={item => item}
+            renderItem={({ item }) => (
+                <SkillCard skill={item}/>
+            )}
+        />        
         
       </View>
       
-    </>
+
   )
 }
+
+const styles = StyleSheet.create({
+    container:{
+        flex: 1,
+        backgroundColor: '#121015',
+        paddingHorizontal: 20,
+        paddingVertical: 70,
+        paddingHorizontal: 30
+    },
+    title:{
+        color: '#fff',
+        fontSize: 24,
+        fontWeight: 'bold'
+    },
+    input: {
+        backgroundColor: '#1F1e25',
+        color: '#fff',
+        fontSize: 18,
+        padding: Platform.OS === 'ios' ? 10 : 8,
+        marginTop: 30,
+        borderRadius: 7
+    },
+    greetings: {
+        color: '#fff'
+    }
+
+})
