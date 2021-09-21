@@ -7,6 +7,7 @@ import {
     Platform,
     FlatList
 } from "react-native";
+
 import { Button } from "../components/Button";
 import { SkillCard } from "../components/SkillCard";
 
@@ -73,7 +74,7 @@ export function Home() {
             onPress={handleAddNewSkill}
         />
         
-        <Text style={ [styles.title, { marginTop: 50 }] }>
+        <Text style={ [styles.title, { marginTop: 20 }] }>
             My Skills
         </Text>
        
